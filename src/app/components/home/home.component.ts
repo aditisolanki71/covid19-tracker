@@ -12,7 +12,7 @@ export class HomeComponent implements OnInit {
   totalActive = 0;
   totalDeaths = 0;
   totalRecovered = 0;
-
+  dataTable = [];
   globalData : GlobalDataSummary[];
 
   pieChart: GoogleChartInterface = {
@@ -23,32 +23,11 @@ export class HomeComponent implements OnInit {
     chartType: 'columnChart'
   }
   constructor(private dataservice: DataServicesService) { }
-
-  initChart() {
-    let dataTable = [];
-    dataTable.push(["Country","Cases"])
-    this.globalData.forEach( cs => {
-      if(cs.confirmed > 2000)
-        dataTable.push([
-        cs.country , cs.confirmed
-      ])
-    })
-    this.pieChart = {
-    chartType: 'PieChart',
-    dataTable: dataTable,
-    options: {
-      height: 500
-    },
-    };
-     this.columnChart = {
-    chartType: 'ColumnChart',
-    dataTable: dataTable,
-    options: {
-      height: 500
-    },
-    };
-
-    console.log('datatable',dataTable)
+ 
+   updateChart(input: HTMLInputElement) {
+     console.log('inside update chart',input.value)
+    console.log(input.value);
+    this.initChart(input.value)
   }
   ngOnInit(): void {
     this.dataservice.getGlobalData().subscribe({
@@ -62,9 +41,56 @@ export class HomeComponent implements OnInit {
           this.totalRecovered += cs.recovered;
           }
         })
-        this.initChart();
+        this.initChart('c');
       }
     })
+  }
+
+   initChart(caseType: string) {
+    console.log('inside initchart',caseType)
+    this.dataTable = [];
+    this.dataTable.push(["Country","Cases"])
+    this.globalData.forEach( cs => {
+      let value : number
+      if(caseType == 'c')
+        if(cs.confirmed > 2000)
+          value = cs.confirmed
+     
+        if(caseType == 'a')
+          if(cs.active > 2000)
+            value = cs.active
+ 
+        if(caseType == 'd')
+          if(cs.deaths > 1000)
+            value = cs.deaths
+ 
+        if(caseType == 'r')
+          if(cs.recovered > 2000)
+              value = cs.recovered
+   
+          this.dataTable.push([
+          cs.country , value
+         ])
+    })
+
+    console.log('casetype is',caseType)
+    console.log('datatable',this.dataTable)
+        this.pieChart = {
+        chartType: 'PieChart',
+        dataTable: this.dataTable,
+        options: {
+          height: 500
+          },
+        };
+        
+        this.columnChart = {
+        chartType: 'ColumnChart',
+        dataTable: this.dataTable,
+        options: {
+          height: 500
+          },
+        };
+        this.dataTable = []
   }
 
 }

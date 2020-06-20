@@ -1,7 +1,37 @@
 <div class="jumbotron bg-white text-center">
    <h1 class="display-4">Corona Covid-19 Tracker</h1>
-   <hr class="my-4">
     <app-dashboard-card [totalConfirmed]='totalConfirmed' [totalActive]='totalActive' [totalRecovered]='totalRecovered' [totalDeaths]='totalDeaths'></app-dashboard-card>
+   <hr class="my-4">
+   
+   <div class="ui form">
+  <div class="inline fields">
+    <label for="fruit">Select Case Type:</label>
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" #c id="c" (click)="updateChart(c)" value="c" name="casetype" checked="" tabindex="0" class="hidden">
+        <label for="c">Confirmed</label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" #d id="d" (click)="updateChart(d)" value="d" name="casetype" tabindex="0" class="hidden">
+        <label for="d">Deaths</label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" #r id="r" (click)="updateChart(r)" value="r" name="casetype" tabindex="0" class="hidden">
+        <label for="r">Recovered</label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" #a id="a" (click)="updateChart(a)" value="a" name="casetype" tabindex="0" class="hidden">
+        <label for="a">Active</label>
+      </div>
+    </div>
+  </div>
+</div>
    </div>
 
    <div class="row">
