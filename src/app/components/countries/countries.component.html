@@ -1,10 +1,14 @@
 <div class="jumbotron bg-white text-center">
    <h1 class="display-4">Corona Covid-19  countries Tracker</h1>
    <hr/>
-   <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-   <hr class="my-4">
-   <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-   <p class="lead">
-     <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
-   </p>
+   <div class="mx-auto">
+      <div class="form-group col-lg-5 mx-auto">
+        <label for="c">Select Country</label>
+        <Select name="" class="form-control" id="c">
+          <option value="country" *ngFor="let country of countries">
+            {{country}}
+          </option>
+        </Select>
+      </div>
+    </div>
  </div>
