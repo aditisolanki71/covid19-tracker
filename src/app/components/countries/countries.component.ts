@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DataServicesService } from 'src/app/services/data-services.service';
 import { GlobalDataSummary } from '../../models/global-data';
 import { DateWiseData } from 'src/app/models/date-wise-data';
-
+import { GoogleChartInterface } from 'ng2-google-charts';
 @Component({
   selector: 'app-countries',
   templateUrl: './countries.component.html',
@@ -18,6 +18,10 @@ export class CountriesComponent implements OnInit {
   dateWiseData ;
   selectedCountryData: DateWiseData[]
 
+  lineChart: GoogleChartInterface = {
+    chartType: 'lineChart'
+  }
+
   data: GlobalDataSummary[];
   countries: String [] = [];
    constructor(private dataservice: DataServicesService) { }
@@ -26,6 +30,7 @@ export class CountriesComponent implements OnInit {
     this.dataservice.getDateWiseData().subscribe(result => {
       console.log('globaldata',result)
       this.dateWiseData = result;
+      this.updateChart();
     })
     this.dataservice.getGlobalData().subscribe(result => {
     this.data =result;
@@ -34,6 +39,24 @@ export class CountriesComponent implements OnInit {
     })
   })
   }
+
+  updateChart() {
+    let dataTable = [];
+    dataTable.push(['cases' , 'date']);
+    this.selectedCountryData.forEach( cs =>{
+      dataTable.push([cs.date , cs.cases])
+    })
+    
+    this.lineChart = {
+      chartType: 'LineChart',
+      dataTable: dataTable,
+      //firstRowIsData: true,
+      options: {
+        height: 500
+      },
+    };
+  }
+
   updateValues(country: string) {
     console.log(country)
     this.data.forEach( cs => {
@@ -46,6 +69,7 @@ export class CountriesComponent implements OnInit {
     });
     this.selectedCountryData = this.dateWiseData[country];
     //console.log('select',this.selectedCountryData)
+    this.updateChart();
   }
 
 }
