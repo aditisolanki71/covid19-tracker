@@ -27,34 +27,26 @@ export class CountriesComponent implements OnInit {
    constructor(private dataservice: DataServicesService) { }
 
   ngOnInit(): void {
-    merge (
-      this.dataservice.getDateWiseData().pipe(
-        map(result => {
-          this.dateWiseData = result;
-        })
-      ),
-      this.dataservice.getDateWiseData().pipe(map(result => {
-        this.data = result;
-        this.data.forEach( cs => {
-          this.countries.push(cs.country);
-        })
-      }))
-    ).subscribe(
-      {
-        complete : () => {
-          this.updateValues('India');
-        }
-      }
-    )
+    this.dataservice.getDateWiseData().subscribe(result => {
+      console.log('globaldata',result)
+      this.dateWiseData = result;
+      this.updateChart();
+    })
+    this.dataservice.getGlobalData().subscribe(result => {
+    this.data =result;
+    this.data.forEach( cs => {
+      this.countries.push(cs.country);
+    })
+  })
   }
 
   updateChart() {
     let dataTable = [];
-    dataTable.push(['Date' , 'Case']);
+    dataTable.push(['cases' , 'date']);
     this.selectedCountryData.forEach( cs =>{
       dataTable.push([cs.date , cs.cases])
     })
-
+    
     this.lineChart = {
       chartType: 'LineChart',
       dataTable: dataTable,
