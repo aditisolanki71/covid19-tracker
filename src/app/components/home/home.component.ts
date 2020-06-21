@@ -17,17 +17,17 @@ export class HomeComponent implements OnInit {
 
   pieChart: GoogleChartInterface = {
     chartType: 'pieChart'
-  }
+  };
 
   columnChart: GoogleChartInterface = {
     chartType: 'columnChart'
-  }
+  };
   constructor(private dataservice: DataServicesService) { }
  
    updateChart(input: HTMLInputElement) {
-     console.log('inside update chart',input.value)
+     console.log('inside update chart',input.value);
     console.log(input.value);
-    this.initChart(input.value)
+    this.initChart(input.value);
   }
   ngOnInit(): void {
     this.dataservice.getGlobalData().subscribe({
@@ -40,41 +40,41 @@ export class HomeComponent implements OnInit {
           this.totalDeaths += cs.deaths;
           this.totalRecovered += cs.recovered;
           }
-        })
+        });
         this.initChart('c');
       }
-    })
+    });
   }
 
    initChart(caseType: string) {
-    console.log('inside initchart',caseType)
+    console.log('inside initchart',caseType);
     this.dataTable = [];
-    this.dataTable.push(["Country","Cases"])
+    this.dataTable.push(["Country","Cases"]);
     this.globalData.forEach( cs => {
       let value : number
       if(caseType == 'c')
         if(cs.confirmed > 2000)
-          value = cs.confirmed
+          value = cs.confirmed;
      
         if(caseType == 'a')
           if(cs.active > 2000)
-            value = cs.active
+            value = cs.active;
  
         if(caseType == 'd')
           if(cs.deaths > 1000)
-            value = cs.deaths
+            value = cs.deaths;
  
         if(caseType == 'r')
           if(cs.recovered > 2000)
-              value = cs.recovered
+              value = cs.recovered;
    
           this.dataTable.push([
           cs.country , value
-         ])
-    })
+         ]);
+    });
 
-    console.log('casetype is',caseType)
-    console.log('datatable',this.dataTable)
+    console.log('casetype is',caseType);
+    console.log('datatable',this.dataTable);
         this.pieChart = {
         chartType: 'PieChart',
         dataTable: this.dataTable,
@@ -83,6 +83,7 @@ export class HomeComponent implements OnInit {
           },
         };
         
+        console.log('piechart',this.pieChart);
         this.columnChart = {
         chartType: 'ColumnChart',
         dataTable: this.dataTable,
@@ -90,7 +91,8 @@ export class HomeComponent implements OnInit {
           height: 500
           },
         };
-        this.dataTable = []
-  }
+
+        console.log('columnchart',this.columnChart);
+    }
 
 }

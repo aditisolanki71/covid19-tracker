@@ -16,11 +16,11 @@ export class CountriesComponent implements OnInit {
   totalRecovered = 0;
 
   dateWiseData ;
-  selectedCountryData: DateWiseData[]
+  selectedCountryData: DateWiseData[];
 
   lineChart: GoogleChartInterface = {
     chartType: 'lineChart'
-  }
+  };
 
   data: GlobalDataSummary[];
   countries: String [] = [];
@@ -28,7 +28,7 @@ export class CountriesComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataservice.getDateWiseData().subscribe(result => {
-      console.log('globaldata',result)
+      console.log('globaldata',result);
       this.dateWiseData = result;
       this.updateChart();
     })
@@ -36,15 +36,17 @@ export class CountriesComponent implements OnInit {
     this.data =result;
     this.data.forEach( cs => {
       this.countries.push(cs.country);
-    })
-  })
+    });
+  });
   }
 
   updateChart() {
     let dataTable = [];
     dataTable.push(['cases' , 'date']);
-    this.selectedCountryData.forEach( cs =>{
-      dataTable.push([cs.date , cs.cases])
+    console.log('selected',this.selectedCountryData);
+    this.selectedCountryData.forEach( cs => {
+      console.log('cs is',cs)
+      dataTable.push([ cs.cases , cs.date ])
     })
     
     this.lineChart = {
@@ -58,13 +60,13 @@ export class CountriesComponent implements OnInit {
   }
 
   updateValues(country: string) {
-    console.log(country)
+    console.log(country);
     this.data.forEach( cs => {
       if(cs.country == country) {
-        this.totalConfirmed = cs.confirmed
-        this.totalActive = cs.active
-        this.totalDeaths = cs.deaths
-        this.totalRecovered = cs.recovered
+        this.totalConfirmed = cs.confirmed;
+        this.totalActive = cs.active;
+        this.totalDeaths = cs.deaths;
+        this.totalRecovered = cs.recovered;
       }
     });
     this.selectedCountryData = this.dateWiseData[country];
